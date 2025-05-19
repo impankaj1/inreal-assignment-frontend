@@ -10,14 +10,16 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { Eye } from "lucide-react";
 import { z } from "zod";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import axiosInstance, { setAccessToken } from "@/app/axiosInstance";
+import { useRouter } from "next/navigation";
+import { BACKEND_BASE_URL } from "@/helpers/helper";
+import { useUserStore } from "@/lib/store";
 
 const formSchema = z.object({
   email: z.string().email("Please enter a valid email id").nonempty(),
@@ -33,21 +35,25 @@ const LoginPage = () => {
     },
   });
 
+  const router = useRouter();
+
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const setUser = useUserStore((state) => state.setUser);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const res = await axios
-      .post(`${process.env.NEXT_PUBLIC_BASE_URL}/auth/login`, values)
-      .then((res) => res.data)
+    const res = await axiosInstance
+      .post(`${BACKEND_BASE_URL}/auth/login`, values)
+      .then((res) => res)
       .catch((err) => {
         toast.error(err.response.data.message);
         return;
       });
 
-    if (res.status === 200) {
-      console.log("redirecting");
+    if (res?.status === 200) {
+      setAccessToken(res.data.token);
+      setUser(res.data.user);
       form.reset();
-      redirect(`/dashboard`);
+      router.push(`/dashboard`);
     }
   }
 

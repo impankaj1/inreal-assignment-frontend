@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import { ToastContainer } from "react-toastify";
+import Navbar from "@/components/Navbar";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,12 +19,12 @@ export default function RootLayout({
       <body className={`antialiased`}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >
+          <Navbar />
           <ToastContainer position="top-center" />
-
           {children}
         </ThemeProvider>
       </body>
