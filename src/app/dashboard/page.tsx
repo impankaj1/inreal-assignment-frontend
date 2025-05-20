@@ -5,7 +5,7 @@ import axiosInstance from "@/app/axiosInstance";
 import { Job } from "@/types/Jobs";
 import { Button } from "@/components/ui/button";
 import { BACKEND_BASE_URL } from "@/helpers/helper";
-import { useUserStore } from "@/lib/store";
+import { useJobStore, useUserStore } from "@/lib/store";
 import { toast } from "react-toastify";
 import { Role } from "@/enums/Roles";
 import { AddJobDialog, jobFormValues } from "@/components/AddJobDialog";
@@ -13,7 +13,6 @@ import { Loader2, Pencil, Trash } from "lucide-react";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 
 const DashboardPage = () => {
-  const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(false);
   const user = useUserStore((state) => state.user);
   const [isAddJobDialogOpen, setIsAddJobDialogOpen] = useState(false);
@@ -21,9 +20,12 @@ const DashboardPage = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [showClearMatches, setShowClearMatches] = useState(false);
+  const jobs = useJobStore((state) => state.jobs);
+  const setJobs = useJobStore((state) => state.setJobs);
+
   const fetchJobs = async (): Promise<Job[]> => {
     let response;
-
+    
     if (user?.role === Role.USER) {
       response = await axiosInstance
         .get(`${BACKEND_BASE_URL}/jobs/`)
