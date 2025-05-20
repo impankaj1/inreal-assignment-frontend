@@ -6,6 +6,7 @@ export interface User {
   experience: number;
   preferred_job_type: string;
   skills: string[];
+  role: string;
   location: string;
   createdAt: Date;
   updatedAt: Date;

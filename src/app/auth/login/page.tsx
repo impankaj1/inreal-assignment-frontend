@@ -14,9 +14,12 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { Eye } from "lucide-react";
 import { z } from "zod";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-import axiosInstance, { setAccessToken } from "@/app/axiosInstance";
+import axiosInstance, {
+  accessToken,
+  setAccessToken,
+} from "@/app/axiosInstance";
 import { useRouter } from "next/navigation";
 import { BACKEND_BASE_URL } from "@/helpers/helper";
 import { useUserStore } from "@/lib/store";
@@ -36,9 +39,15 @@ const LoginPage = () => {
   });
 
   const router = useRouter();
-
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const setUser = useUserStore((state) => state.setUser);
+  const user = useUserStore((state) => state.user);
+
+  useEffect(() => {
+    if (user && accessToken) {
+      router.push("/dashboard");
+    }
+  }, [user, router]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const res = await axiosInstance
@@ -68,7 +77,7 @@ const LoginPage = () => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="w-1/2 lg:w-1/4 p-10 m-2 outline outline-gray-100 shadow-2xl rounded-2xl bg-gradient-to-br from-secondary/40 via-secondary/90 to-secondary/40  text-white space-y-8"
+          className="w-5/6 sm:w-3/4 md:w-1/2 lg:w-1/4 p-4 md:p-10 m-2 outline outline-gray-100 shadow-2xl rounded-2xl bg-gradient-to-br from-secondary/40 via-secondary/90 to-secondary/40  text-white space-y-8"
         >
           <FormField
             control={form.control}
@@ -77,7 +86,11 @@ const LoginPage = () => {
               <FormItem>
                 <FormLabel className="text-foreground">Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="Email" {...field} />
+                  <Input
+                    className="text-foreground"
+                    placeholder="Email"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -115,7 +128,7 @@ const LoginPage = () => {
           </Button>
         </form>
       </Form>
-      <div>
+      <div className="mt-4">
         <p>
           Don&apos;t have an account?{" "}
           <span className="m-1">

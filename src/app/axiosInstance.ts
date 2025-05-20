@@ -1,7 +1,7 @@
 import { BACKEND_BASE_URL } from "@/helpers/helper";
 import axios from "axios";
 
-let accessToken: string | null =
+export let accessToken: string | null =
   typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
 
 const axiosInstance = axios.create({
@@ -79,7 +79,7 @@ axiosInstance.interceptors.response.use(
       const newAccessToken = res.data.token;
       setAccessToken(newAccessToken);
       originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-      
+
       processQueue(null, newAccessToken);
 
       return axiosInstance(originalRequest);

@@ -18,14 +18,18 @@ interface MultiSelectProps {
   options: Option[];
   onChange: (selectedKeys: string[]) => void;
   label?: string;
+  selectedOptions?: string[];
 }
 
 const MultiSelect = ({
   options,
   onChange,
   label = "Select Options",
+  selectedOptions,
 }: MultiSelectProps) => {
-  const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
+  const [selectedKeys, setSelectedKeys] = useState<string[]>(
+    selectedOptions || []
+  );
 
   const toggleOption = (key: string) => {
     const newSelection = selectedKeys.includes(key)
@@ -39,7 +43,7 @@ const MultiSelect = ({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="flex gap-2">
+        <Button variant="outline" className="flex gap-2 text-foreground">
           <span>{label}</span>
         </Button>
       </DropdownMenuTrigger>
