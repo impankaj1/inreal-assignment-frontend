@@ -25,7 +25,7 @@ const DashboardPage = () => {
 
   const fetchJobs = async (): Promise<Job[]> => {
     let response;
-    
+
     if (user?.role === Role.USER) {
       response = await axiosInstance
         .get(`${BACKEND_BASE_URL}/jobs/`)
@@ -237,7 +237,7 @@ const DashboardPage = () => {
                 </div>
                 <div className="flex flex-col justify-between gap-2">
                   <p className="">{job.description}</p>
-                  <p className=" font-semibold">Salary: {job.salary}</p>
+                  <p className=" font-semibold">Salary: &#8377;{job.salary}</p>
                 </div>
               </div>
             ))}
