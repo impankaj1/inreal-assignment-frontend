@@ -28,6 +28,7 @@ import { SelectTrigger } from "@/components/ui/select";
 import { Select } from "@/components/ui/select";
 import { Role } from "@/enums/Roles";
 import { skills } from "@/enums/Skills";
+import { cn } from "@/lib/utils";
 const SignUpPage: FC = () => {
   const formSchema = z.object({
     name: z.string().nonempty(),
@@ -140,7 +141,12 @@ const SignUpPage: FC = () => {
               </FormItem>
             )}
           />
-          <div className="grid grid-cols-2 gap-4">
+          <div
+            className={cn(
+              "grid gap-4",
+              form.watch("role") === Role.ADMIN ? "grid-cols-1" : "grid-cols-2"
+            )}
+          >
             <FormField
               control={form.control}
               name="role"
@@ -169,36 +175,44 @@ const SignUpPage: FC = () => {
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="preferred_job_type"
-              render={({ field }) => (
-                <FormItem className="text-foreground w-full">
-                  <FormLabel className="text-foreground">
-                    Preferred Job Type
-                  </FormLabel>
-                  <FormControl>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <SelectTrigger className="text-foreground">
-                        <SelectValue
-                          className="text-foreground"
-                          placeholder="Select a preferred job type"
-                        />
-                      </SelectTrigger>
-                      <SelectContent className="text-foreground">
-                        <SelectItem value={JobTypes.REMOTE}>Remote</SelectItem>
-                        <SelectItem value={JobTypes.HYBRID}>Hybrid</SelectItem>
-                        <SelectItem value={JobTypes.ONSITE}>On-Site</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {form.watch("role") === Role.USER && (
+              <FormField
+                control={form.control}
+                name="preferred_job_type"
+                render={({ field }) => (
+                  <FormItem className="text-foreground w-full">
+                    <FormLabel className="text-foreground">
+                      Preferred Job Type
+                    </FormLabel>
+                    <FormControl>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <SelectTrigger className="text-foreground">
+                          <SelectValue
+                            className="text-foreground"
+                            placeholder="Select a preferred job type"
+                          />
+                        </SelectTrigger>
+                        <SelectContent className="text-foreground">
+                          <SelectItem value={JobTypes.REMOTE}>
+                            Remote
+                          </SelectItem>
+                          <SelectItem value={JobTypes.HYBRID}>
+                            Hybrid
+                          </SelectItem>
+                          <SelectItem value={JobTypes.ONSITE}>
+                            On-Site
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
           </div>
           <FormField
             control={form.control}
