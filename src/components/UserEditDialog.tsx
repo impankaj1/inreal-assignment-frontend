@@ -124,7 +124,7 @@ export function UserEditDialog(props: UserEditDialogProps) {
                   control={form.control}
                   name="role"
                   render={({ field }) => (
-                    <FormItem className="text-foreground w-full outline outline-gray-100">
+                    <FormItem className="text-foreground w-full ">
                       <FormLabel className="text-foreground w-full">
                         Role
                       </FormLabel>
@@ -155,7 +155,7 @@ export function UserEditDialog(props: UserEditDialogProps) {
                   control={form.control}
                   name="preferred_job_type"
                   render={({ field }) => (
-                    <FormItem className="text-foreground w-full outline outline-gray-100">
+                    <FormItem className="text-foreground w-full ">
                       <FormLabel className="text-foreground">
                         Preferred Job Type
                       </FormLabel>
