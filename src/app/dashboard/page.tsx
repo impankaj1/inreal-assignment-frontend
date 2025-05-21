@@ -205,29 +205,31 @@ const DashboardPage = () => {
                     <h2 className="text-xl font-semibold text-primary">
                       {job.title}
                     </h2>
-                    <div className="flex gap-2">
-                      <Button
-                        onClick={() => {
-                          setSelectedJob(job);
-                          setIsEdit(true);
-                          setIsAddJobDialogOpen(true);
-                        }}
-                      >
-                        <Pencil />
-                      </Button>
-                      <ConfirmDialog
-                        open={isDeleteDialogOpen}
-                        trigger={
-                          <Button onClick={toggleDeleteDialog}>
-                            <Trash />
-                          </Button>
-                        }
-                        title="Are you sure?"
-                        description="This action cannot be undone."
-                        onConfirm={() => handleDeleteJob(job._id)}
-                        onCancel={toggleDeleteDialog}
-                      />
-                    </div>
+                    {user?.role === Role.ADMIN && (
+                      <div className="flex gap-2">
+                        <Button
+                          onClick={() => {
+                            setSelectedJob(job);
+                            setIsEdit(true);
+                            setIsAddJobDialogOpen(true);
+                          }}
+                        >
+                          <Pencil />
+                        </Button>
+                        <ConfirmDialog
+                          open={isDeleteDialogOpen}
+                          trigger={
+                            <Button onClick={toggleDeleteDialog}>
+                              <Trash />
+                            </Button>
+                          }
+                          title="Are you sure?"
+                          description="This action cannot be undone."
+                          onConfirm={() => handleDeleteJob(job._id)}
+                          onCancel={toggleDeleteDialog}
+                        />
+                      </div>
+                    )}
                   </div>
                   <p className="text-gray-400">{job.company}</p>
                 </div>
